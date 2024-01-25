@@ -6,12 +6,16 @@
  */
 
 import React from 'react';
-import {Text, View} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import AppStack from './navigators/app.stack';
+import {NavigationContainer} from '@react-navigation/native';
 const App = () => {
   return (
-    <View>
-      <Text>Hello World</Text>
-    </View>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <AppStack />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
