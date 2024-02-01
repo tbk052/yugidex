@@ -1,226 +1,149 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import useCallAPI from '../api/call-api';
+import race_image from '../features/race-image';
 
 interface IData {
-  name: string;
+  link: any;
+  archetype: any;
+  attribute: any;
+  race: any;
+  level: any;
+  def: any;
+  atk: any;
+  id: any;
+  desc: string;
+  type: any;
+  name: string | null;
   number: number;
   image: string;
+  image_url: string | null;
 }
-const cardData = [
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card2',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/64163367.jpg',
-  },
-  {
-    name: 'card3',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/91231901.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-  {
-    name: 'card1',
-    number: '4567890123456789',
-    image: 'https://images.ygoprodeck.com/images/cards/34541863.jpg',
-  },
-];
-const cardDesDetail = {
-  id: null,
-  name: null,
-  type: null,
-  frameType: null,
-  desc: null,
-  atk: null,
-  def: null,
-  level: null,
-  race: null,
-  attribute: null,
-  archetype: null,
-  ygoprodeck_url: null,
-  image_url:
-    'https://orig10.deviantart.net/69f2/f/2016/289/4/1/ygo_card_backing__final__by_icycatelf-dal6wsb.png',
-  image_url_small: null,
-  image_url_cropped: null,
-};
-const ListView = () => {
-  const [cardDetail, setCardDetail] = useState(cardDesDetail);
 
-  const renderItem = ({item}: {item: IData}) => (
-    <View style={{flex: 1 / 6, paddingTop: 2}}>
-      <TouchableOpacity
-        onPress={() => {
-          // setCardDetail;
-          console.log(item.name);
-          setCardDetail({
-            ...cardDetail,
-            name: item.name,
-            image_url: item.image,
-          });
-        }}>
-        <Image
-          src={item.image}
-          style={{
-            width: 66,
-            height: 98,
-            borderRadius: 1,
-          }}
-        />
-      </TouchableOpacity>
-    </View>
-  );
-  console.log(cardDetail.name);
-  return (
-    <View style={{flex: 1}}>
+const ListView = () => {
+  const cardData = useCallAPI().listYugiCard;
+  const renderItem = ({item}: {item: IData}) => {
+    return (
       <View
         style={{
+          paddingTop: 2,
+          flexDirection: 'row',
           flex: 1,
-          backgroundColor: 'red',
+          top: 10,
+          paddingBottom: 20,
         }}>
-        <View style={{flex: 5, flexDirection: 'row'}}>
-          <View style={{flex: 4, backgroundColor: 'yellow'}}>
-            <Text>Name: {cardDetail.name}</Text>
-          </View>
-          <View
+        <Image
+          src={`https://images.ygoprodeck.com/images/cards/${item.id}.jpg`}
+          style={{
+            width: 123,
+            height: 188,
+            borderRadius: 3,
+            flex: 1,
+          }}
+        />
+        <View style={{flex: 2, marginLeft: 10, marginTop: 2, marginBottom: 5}}>
+          <Text
             style={{
-              flex: 5,
-              backgroundColor: 'red',
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignSelf: 'center',
+              fontSize: 18,
+              fontWeight: 700,
+              marginBottom: 8,
             }}>
+            {item.name}
+          </Text>
+
+          <View style={{flexDirection: 'row', marginBottom: 8}}>
             <Image
-              src={cardDetail.image_url}
               style={{
-                width: 210,
-                height: 300,
-                borderRadius: 3,
+                width: 20,
+                height: 20,
+                marginRight: 10,
               }}
+              source={race_image[item.race]}
             />
+            <Text>{item.race}</Text>
+            {item.attribute && (
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  style={{
+                    width: 20,
+                    height: 20,
+                    marginLeft: 20,
+                    marginRight: 10,
+                  }}
+                  source={race_image[item.attribute]}
+                />
+                <Text>{item.attribute}</Text>
+              </View>
+            )}
           </View>
-        </View>
-        <View style={{flex: 1, backgroundColor: 'white'}}>
-          <Text> {cardDetail.desc}</Text>
+          <View style={{flexDirection: 'row', marginBottom: 4}}>
+            {item.type === 'Spell Card' && (
+              <Image
+                style={{
+                  width: 20,
+                  height: 20,
+                  marginRight: 10,
+                }}
+                source={require('../../images/SPELL.png')}
+              />
+            )}
+            {item.type === 'Trap Card' && (
+              <Image
+                style={{
+                  width: 20,
+                  height: 20,
+                  marginRight: 10,
+                }}
+                source={require('../../images/TRAP.png')}
+              />
+            )}
+            <Text>{item.type}</Text>
+          </View>
+          {item.level && (
+            <View style={{flexDirection: 'row', marginBottom: 4}}>
+              <Text style={{marginRight: 10}}>Level: {item.level}</Text>
+              {[...Array(item.level).keys()].map(() => (
+                <Image
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}
+                  source={require('../../images/Level.png')}
+                />
+              ))}
+            </View>
+          )}
+          {item.atk && (
+            <Text style={{marginBottom: 4}}>
+              ATK/ {item.atk} - DEF/ {item.def}
+            </Text>
+          )}
+          <ScrollView>
+            <Text numberOfLines={undefined}>{item.desc}</Text>
+          </ScrollView>
         </View>
       </View>
-      <FlatList
-        data={cardData}
-        numColumns={6}
-        renderItem={renderItem}
-        style={{backgroundColor: 'yellow', flex: 1}}
-        contentContainerStyle={{
-          backgroundColor: 'red',
-          // flexDirection: 'row',
-
-          paddingLeft: 4,
-          paddingRight: 3,
-        }}
-      />
-    </View>
+    );
+  };
+  return (
+    <FlatList
+      data={cardData}
+      // style={{flex: 1}}
+      renderItem={renderItem}
+      contentContainerStyle={{
+        paddingLeft: 4,
+        paddingRight: 3,
+      }}
+    />
   );
 };
 

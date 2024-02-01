@@ -1,13 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
-// import TreeView from './tree-view';
+// import ListView from './galery-view';
+import GalleryView from './gallery-view';
+import Filter from '../features/filter';
 import ListView from './list-view';
 
 export const CardList = () => {
+  const [view, setView] = useState('GalleryView');
   return (
     <View style={{flex: 1}}>
-      <View style={{backgroundColor: 'green'}}>
+      <View style={{paddingBottom: 10, backgroundColor: 'red'}}>
         {/* <Image
           source={require('../../images/main-logo-3.png')}
           style={{
@@ -22,8 +25,8 @@ export const CardList = () => {
         <View
           style={{
             flexDirection: 'row',
-            paddingHorizontal: 30,
-            paddingTop: 40,
+            paddingHorizontal: 20,
+            paddingTop: 20,
           }}>
           <TextInput
             placeholder="Search..."
@@ -59,7 +62,11 @@ export const CardList = () => {
               }}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={{alignSelf: 'center'}}>
+          <TouchableOpacity
+            style={{alignSelf: 'center'}}
+            onPress={() => {
+              Filter();
+            }}>
             <Text
               style={{
                 borderWidth: 1,
@@ -72,23 +79,28 @@ export const CardList = () => {
               Filter
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{alignSelf: 'center'}}>
+          <TouchableOpacity
+            style={{alignSelf: 'center'}}
+            onPress={() => {
+              setView(view === 'GalleryView' ? 'ListView' : 'GalleryView');
+            }}>
             <Text
               style={{
                 borderWidth: 1,
-                width: 50,
+                width: 80,
                 height: 25,
                 marginLeft: 10,
                 textAlign: 'center',
                 textAlignVertical: 'center',
               }}>
-              Sort by:
+              Galery view
             </Text>
           </TouchableOpacity>
         </View>
       </View>
-      {/* <TreeView /> */}
-      <ListView />
+      {view === 'GalleryView' ? <GalleryView /> : <ListView />}
+      {/* <GaleryView /> */}
+      {/* <ListView /> */}
     </View>
   );
 };
